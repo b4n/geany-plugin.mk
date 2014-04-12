@@ -95,7 +95,7 @@ uninstall-$(PLUGIN):
 
 clean-$(PLUGIN)-local:
 clean-$(PLUGIN):
-	$(LIBTOOL_CLEAN) $(PLUGIN).o $(PLUGIN).lo
+	$(LIBTOOL_CLEAN) $(PLUGIN_SOURCES:.c=.lo)
 	$(RM) $(DEPFILES)
 	$(RMDIR) $(DEPSDIR) >/dev/null 2>&1 || :
 
