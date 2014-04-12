@@ -2,7 +2,7 @@
 
 `geany-plugin.mk` provides (experimental) easy Make support for
 building standalone Geany plugins.  This does not aim at being as
-powerful as can be "real" build systems like Autotools, CMake or other,
+powerful as can be "real" build systems like Autotools, CMake or others,
 but intent to be simple, powerful enough and very easy to setup.
 
 One particular thing it intentionally  doesn't support is the
@@ -38,9 +38,9 @@ yet to be tested on non-Linux platforms.
 ## Usage as a developer
 
 To use `geany-plugin.mk`, the only absolutely required thing is to set
-the `PLUGIN` Make variable to the name of plugin the plugin to build.
-It will be the name of the plugin library file, with the library
-extension appended.
+the `PLUGIN` Make variable to the name of the plugin to build. It will
+be the name of the plugin library file, with the library extension
+appended.
 
 You may also want to override the following:
 
@@ -53,7 +53,7 @@ You may also want to override the following:
 `PLUGIN_CFLAGS`
 : the additional C compiler flags for the plugin;
 `PLUGIN_LDFLAGS`
-: the additional linker linker flags for the plugin.
+: the additional linker flags for the plugin.
 
 Please note that the plugin-specific flags should only contain the
 required flags, like constants definition, but no user flags.  E.g.,
@@ -122,7 +122,7 @@ following should not be useful, the caller can also override some
 task-specific Libtool calls: `LIBTOOL_CC`, `LIBTOOL_LD`,
 `LIBTOOL_CLEAN`, `LIBTOOL_INSTALL` and `LIBTOOL_UNINSTALL`. Note
 however that as the default for those respects the various tools above,
-one should never have to override them unless ones tries to avoid using
+one should never have to override them unless one tries to avoid using
 libtool.
 
 Used flags include `CFLAGS`, `CPPFLAGS`, `LDFLAGS` and `LIBTOOLFLAGS`.
@@ -136,8 +136,8 @@ unless *pkg-config* reports erroneous flags.
 
 The special `CC_DEPS_CFLAGS` are flags passed to the compiler to
 generate Makefile dependencies in `$(DEPSDIR)/$@.Po`.  The default
-value uses GCC syntax for it; if your compiler doesn't support it you
-can set it either to a blank value (which will obviously disable
+value uses GCC syntax for it; but if your compiler doesn't support it
+you can set it either to a blank value (which will obviously disable
 automatic dependencies) or to whatever flags your compiler has for this
 purpose.
 
