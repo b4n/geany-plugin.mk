@@ -147,6 +147,35 @@ developer-specific Makefile does.  This variable should point to the
 directory containing the sources.
 
 
+## Extending `geany-plugin.mk`
+
+### Add support for a new source file type
+
+To add support for a new file type in `PLUGIN_SOURCES`, simply add a
+rule to transform files with this file type's extension into a built
+object with the `.lo` extension *appended* (which means the output
+object file from `foo.c` would be `foo.c.lo`).
+
+Using suffix rules, this could look like this for an hypothetical *foo*
+file type and a compiler `foocc`:
+
+```Makefile
+# always let callers override tools
+FOOCC ?= foocc
+
+# add suffixes
+.SUFFIXES: .foo .foo.lo
+
+.foo.foo.lo:
+    $(FOOCC) -o $@ -c $< $(FOOFLAGS)
+```
+
+It is recommended that, if possible, and if it makes sense for this file
+type, the rule also generate a Make dependencies file for `$@` in
+`$(DEPSDIR)/$@.Po` (see the rule to build C sources for an example using
+GCC).
+
+
 ## Appendix
 
 ### License

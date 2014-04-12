@@ -53,9 +53,12 @@ PACKAGES_LIBS     ?= `$(PKG_CONFIG) $(PLUGIN_PACKAGES) geany --libs`
 # installation directory
 plugindir         ?= `$(PKG_CONFIG) geany --variable=libdir`/geany
 
+# objects files
+PLUGIN_OBJECTS     = $(PLUGIN_SOURCES:=.lo)
+
 # dependency generation CFLAGS
 DEPSDIR            = .deps
-DEPFILES           = $(PLUGIN_SOURCES:%.c=$(DEPSDIR)/%.lo.Po)
+DEPFILES           = $(PLUGIN_OBJECTS:%=$(DEPSDIR)/%.Po)
 CC_DEPS_CFLAGS    ?= -MT $@ -MP -MD -MF $(DEPSDIR)/$@.Po
 
 # rules
@@ -65,10 +68,10 @@ distclean: clean
 install:
 uninstall:
 
-.SUFFIXES: .c .lo
 .PHONY: all clean distclean install uninstall
 
-.c.lo:
+.SUFFIXES: .c .c.lo
+.c.c.lo:
 	test -d $(DEPSDIR) || $(MKDIR_P) $(DEPSDIR)
 	$(LIBTOOL_CC) -c $< -o $@ $(CC_DEPS_CFLAGS) \
 		$(PACKAGES_CFLAGS) $(PLUGIN_CFLAGS) $(CPPFLAGS) $(CFLAGS)
@@ -79,8 +82,8 @@ uninstall: uninstall-$(PLUGIN) uninstall-$(PLUGIN)-local
 clean: clean-$(PLUGIN) clean-$(PLUGIN)-local
 distclean: distclean-$(PLUGIN) distclean-$(PLUGIN)-local
 
-$(PLUGIN).la: $(PLUGIN_SOURCES:.c=.lo)
-	$(LIBTOOL_LD) -o $@ $(PLUGIN_SOURCES:.c=.lo) \
+$(PLUGIN).la: $(PLUGIN_OBJECTS)
+	$(LIBTOOL_LD) -o $@ $(PLUGIN_OBJECTS) \
 		$(PACKAGES_LIBS) $(PLUGIN_LDFLAGS) $(LIBS) $(LDFLAGS)
 
 install-$(PLUGIN)-local:
@@ -95,7 +98,7 @@ uninstall-$(PLUGIN):
 
 clean-$(PLUGIN)-local:
 clean-$(PLUGIN):
-	$(LIBTOOL_CLEAN) $(PLUGIN_SOURCES:.c=.lo)
+	$(LIBTOOL_CLEAN) $(PLUGIN_OBJECTS)
 	$(RM) $(DEPFILES)
 	$(RMDIR) $(DEPSDIR) >/dev/null 2>&1 || :
 
