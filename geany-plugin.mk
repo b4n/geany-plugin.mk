@@ -30,6 +30,7 @@ VPATH             ?= .
 
 # tools
 CC                ?= cc
+CXX               ?= c++
 RM                ?= rm -f
 RMDIR             ?= rmdir
 MKDIR_P           ?= mkdir -p
@@ -39,6 +40,8 @@ PKG_CONFIG        ?= pkg-config
 
 # libtool aliases
 LIBTOOL_CC        ?= $(LIBTOOL) $(LIBTOOLFLAGS) --tag=CC --mode=compile $(CC) \
+                     -shared
+LIBTOOL_CXX       ?= $(LIBTOOL) $(LIBTOOLFLAGS) --tag=CXX --mode=compile $(CXX) \
                      -shared
 LIBTOOL_LD        ?= $(LIBTOOL) $(LIBTOOLFLAGS) --tag=CC --mode=link $(CC) \
                      -shared -module -avoid-version -rpath $(plugindir)
@@ -75,6 +78,12 @@ uninstall:
 	test -d $(DEPSDIR) || $(MKDIR_P) $(DEPSDIR)
 	$(LIBTOOL_CC) -c $< -o $@ $(CC_DEPS_CFLAGS) \
 		$(PACKAGES_CFLAGS) $(PLUGIN_CFLAGS) $(CPPFLAGS) $(CFLAGS)
+
+.SUFFIXES: .cc .cc.lo .cxx .cxx.lo .cpp .cpp.lo .c++ .c++.lo
+.cc.cc.lo .cxx.cxx.lo .cpp.cpp.lo .c++.c++.lo:
+	test -d $(DEPSDIR) || $(MKDIR_P) $(DEPSDIR)
+	$(LIBTOOL_CXX) -c $< -o $@ $(CC_DEPS_CFLAGS) \
+		$(PACKAGES_CFLAGS) $(PLUGIN_CFLAGS) $(CPPFLAGS) $(CXXFLAGS)
 
 all: $(PLUGIN).la
 install: install-$(PLUGIN) install-$(PLUGIN)-local

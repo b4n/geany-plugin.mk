@@ -104,6 +104,8 @@ the environment.  Tools are:
 
 CC
 : C compiler, defaults to `cc`;
+CXX
+: C++ compiler, defaults to `c++`;
 RM
 : removes files, defaults to `rm -f`;
 RMDIR
@@ -119,7 +121,7 @@ PKG_CONFIG
 
 Although Libtool is supposed to be used, and then overriding the
 following should not be useful, the caller can also override some
-task-specific Libtool calls: `LIBTOOL_CC`, `LIBTOOL_LD`,
+task-specific Libtool calls: `LIBTOOL_CC`, `LIBTOOL_CXX`, `LIBTOOL_LD`,
 `LIBTOOL_CLEAN`, `LIBTOOL_INSTALL` and `LIBTOOL_UNINSTALL`. Note
 however that as the default for those respects the various tools above,
 one should never have to override them unless one tries to avoid using
